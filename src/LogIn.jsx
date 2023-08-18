@@ -1,9 +1,12 @@
 import React from "react";
 import "./LogIn.css";
+import { useUser } from "./UserProvider";
 
 const LogIn = () => {
   // Log in API url
   const url = "http://localhost:3001/api/login";
+
+  const { user, setUser } = useUser();
 
   // Log in form submission
   const handleSubmit = async (e) => {
@@ -12,6 +15,7 @@ const LogIn = () => {
     const form = e.target;
     const username = form.username.value;
     const options = {
+      credentials: "include",
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: username }),
@@ -22,6 +26,7 @@ const LogIn = () => {
 
       const result = await response.json();
       console.log(result);
+      setUser(result.data);
     } catch (err) {
       console.log(err.message);
     }
