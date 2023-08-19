@@ -1,3 +1,11 @@
+.login-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .login-panel {
   border: 1px solid black;
   border-radius: 16px;

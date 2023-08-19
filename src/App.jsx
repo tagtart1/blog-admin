@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./App.css";
 import LogIn from "./LogIn";
 import { useUser } from "./UserProvider";
+import Dashboard from "./Dashboard";
 
 function App() {
   const { user, setUser } = useUser();
@@ -12,16 +13,18 @@ function App() {
         credentials: "include",
       });
 
+      if (!response.ok) {
+        return;
+      }
       const result = await response.json();
-      setUser(result.data);
+
+      setUser(result.data.user);
     };
     fetchUser();
   }, [setUser]);
 
   return (
-    <div className="App">
-      {user ? <div>Wassup {user.username}</div> : <LogIn />}
-    </div>
+    <div className="App">{user ? <Dashboard user={user} /> : <LogIn />}</div>
   );
 }
 

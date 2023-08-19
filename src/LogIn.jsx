@@ -33,19 +33,21 @@ const LogIn = () => {
   };
 
   return (
-    <section className="login-panel">
-      <h1 className="form-title">Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="login-form-group">
-          <label htmlFor="username">Username:</label>
-          <input type="text" id="username" name="username" />
-        </div>
-        <div className="login-form-group">
-          <label htmlFor="password">Password:</label>
-          <input type="text" id="password" name="password" />
-        </div>
-        <button type="submit">Log In</button>
-      </form>
+    <section className="login-section">
+      <div className="login-panel">
+        <h1 className="form-title">Log In</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="login-form-group">
+            <label htmlFor="username">Username:</label>
+            <input type="text" id="username" name="username" />
+          </div>
+          <div className="login-form-group">
+            <label htmlFor="password">Password:</label>
+            <input type="text" id="password" name="password" />
+          </div>
+          <button type="submit">Log In</button>
+        </form>
+      </div>
     </section>
   );
 };
