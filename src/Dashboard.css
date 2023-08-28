@@ -45,3 +45,8 @@
   color: rgb(83, 83, 83);
   font-size: 14px;
 }
+
+.user-post-sections {
+  display: flex;
+  gap: 36px;
+}

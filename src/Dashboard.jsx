@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Dashboard = ({ user }) => {
   const { setUser } = useUser();
   const [posts, setPosts] = useState(null);
+  const [draftPosts, setDraftPosts] = useState(null);
 
   const logOut = async () => {
     const response = await fetch("http://localhost:3001/api/logout", {
@@ -22,7 +23,7 @@ const Dashboard = ({ user }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch(
-        `http://localhost:3001/api/posts?userId=${user.id}`
+        `http://localhost:3001/api/posts?user_id=${user.id}`
       );
 
       const results = await response.json();
@@ -30,6 +31,18 @@ const Dashboard = ({ user }) => {
       setPosts(results);
     };
 
+    const fetchDrafts = async () => {
+      const response = await fetch(
+        `http://localhost:3001/api/posts?user_id=${user.id}&only_drafts=true`
+      );
+
+      const results = await response.json();
+
+      console.log(results);
+      setDraftPosts(results);
+    };
+
+    fetchDrafts();
     fetchPosts();
   }, [user.id]);
 
@@ -44,22 +57,42 @@ const Dashboard = ({ user }) => {
           <Link to="/create">Create</Link>
         </div>
       </header>
-      <section className="posts-feed">
-        {posts ? (
-          posts.map((post) => {
-            return (
-              <article key={post._id} className="post-parent">
-                <h2>{post.title}</h2>
-                <p className="post-date">
-                  Posted on {moment(post.timestamp).format("MMM Do, YYYY")}
-                </p>
-              </article>
-            );
-          })
-        ) : (
-          <h1>You have 0 posts</h1>
-        )}
-      </section>
+      <div className="user-post-sections">
+        <section className="posts-feed">
+          <h2>Posted</h2>
+          {posts ? (
+            posts.map((post) => {
+              return (
+                <article key={post._id} className="post-parent">
+                  <h2>{post.title}</h2>
+                  <p className="post-date">
+                    Posted on {moment(post.timestamp).format("MMM Do, YYYY")}
+                  </p>
+                </article>
+              );
+            })
+          ) : (
+            <h1>You have 0 posts</h1>
+          )}
+        </section>
+        <section className="posts-feed">
+          <h2>Drafts</h2>
+          {draftPosts ? (
+            draftPosts.map((post) => {
+              return (
+                <article key={post._id} className="post-parent">
+                  <h2>{post.title}</h2>
+                  <p className="post-date">
+                    Started on {moment(post.timestamp).format("MMM Do, YYYY")}
+                  </p>
+                </article>
+              );
+            })
+          ) : (
+            <h1>You have 0 drafts</h1>
+          )}
+        </section>
+      </div>
       <a
         href="http://localhost:3000/"
         target="_blank"
