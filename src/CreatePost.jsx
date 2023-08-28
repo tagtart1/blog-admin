@@ -2,9 +2,11 @@ import React from "react";
 import { Link, redirect } from "react-router-dom";
 import "./CreatePost.css";
 import { useState } from "react";
+import { useUser } from "./UserProvider";
 
 const CreatePost = () => {
   const [isDraft, setIsDraft] = useState(false);
+  const { user } = useUser();
 
   const url = "http://localhost:3001/api/posts";
 
@@ -33,6 +35,10 @@ const CreatePost = () => {
       console.log(err.message);
     }
   };
+
+  if (!user) {
+    return;
+  }
 
   return (
     <main className="create-post-main">

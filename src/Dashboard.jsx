@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "./UserProvider";
 import "./Dashboard.css";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Dashboard = ({ user }) => {
-  const { setUser } = useUser();
+const Dashboard = () => {
+  const { user, setUser } = useUser();
   const [posts, setPosts] = useState(null);
   const [draftPosts, setDraftPosts] = useState(null);
+  const navigate = useNavigate();
 
   const logOut = async () => {
     const response = await fetch("http://localhost:3001/api/logout", {
@@ -17,6 +18,7 @@ const Dashboard = ({ user }) => {
 
     if (response.ok) {
       setUser(null);
+      navigate("/log-in");
     }
   };
 
@@ -42,9 +44,17 @@ const Dashboard = ({ user }) => {
       setDraftPosts(results);
     };
 
+    if (!user) {
+      return;
+    }
+
     fetchDrafts();
     fetchPosts();
-  }, [user.id]);
+  }, [user]);
+
+  if (!user) {
+    return;
+  }
 
   return (
     <main className="dashboard-main">

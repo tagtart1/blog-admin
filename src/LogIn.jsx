@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./LogIn.css";
 import { useUser } from "./UserProvider";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   // Log in API url
   const url = "http://localhost:3001/api/login";
 
   const { user, setUser } = useUser();
+  const navigate = useNavigate();
 
   // Log in form submission
   const handleSubmit = async (e) => {
@@ -27,6 +29,7 @@ const LogIn = () => {
       const result = await response.json();
       console.log(result);
       setUser(result.data);
+      navigate("/");
     } catch (err) {
       console.log(err.message);
     }

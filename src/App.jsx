@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import "./App.css";
-import LogIn from "./LogIn";
+
 import { useUser } from "./UserProvider";
 import Dashboard from "./Dashboard";
+import { Routes, Route, redirect, useNavigate } from "react-router-dom";
+import CreatePost from "./CreatePost";
+import LogIn from "./LogIn";
 
 function App() {
   const { user, setUser } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -14,6 +18,7 @@ function App() {
       });
 
       if (!response.ok) {
+        navigate("/log-in");
         return;
       }
       const result = await response.json();
@@ -24,7 +29,12 @@ function App() {
   }, [setUser]);
 
   return (
-    <div className="App">{user ? <Dashboard user={user} /> : <LogIn />}</div>
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/create" element={<CreatePost />} />
+      </Routes>
+    </div>
   );
 }
 
