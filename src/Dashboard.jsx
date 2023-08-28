@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "./UserProvider";
 import "./Dashboard.css";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const Dashboard = ({ user }) => {
   const { setUser } = useUser();
@@ -36,9 +37,12 @@ const Dashboard = ({ user }) => {
     <main className="dashboard-main">
       <header className="dashboard-header">
         <h1>Hello {user.username}</h1>
-        <button className="logout-button" onClick={logOut}>
-          Log out
-        </button>
+        <div>
+          <button className="logout-button" onClick={logOut}>
+            Log out
+          </button>
+          <Link to="/create">Create</Link>
+        </div>
       </header>
       <section className="posts-feed">
         {posts ? (
