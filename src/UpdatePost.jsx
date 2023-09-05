@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import he from "he";
 import "./UpdatePost.css";
 
 const UpdatePost = () => {
@@ -97,7 +98,7 @@ const UpdatePost = () => {
             id="text"
             cols="30"
             rows="10"
-            defaultValue={post.text}
+            defaultValue={he.decode(post.text)}
           ></textarea>
         </div>
         <button onClick={cancelEdit} type="button">
