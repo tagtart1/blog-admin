@@ -43,6 +43,24 @@ const UpdatePost = () => {
       const response = await fetch(endpoint, options);
 
       const result = await response.json();
+      navigate("/");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const deletePost = async (e) => {
+    e.preventDefault();
+    const endpoint = `http://localhost:3001/api/posts/${params.id}`;
+    const options = {
+      credentials: "include",
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: params.id }),
+    };
+    try {
+      const response = await fetch(endpoint, options);
+      const result = await response.json();
       console.log(result);
       navigate("/");
     } catch (err) {
@@ -78,6 +96,10 @@ const UpdatePost = () => {
           Cancel
         </button>
         <button type="submit">Save</button>
+        <button type="button" onClick={deletePost}>
+          Delete
+        </button>
+        {post.isDraft ? <button>Post</button> : <button>Send to drafts</button>}
       </form>
     </main>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, redirect } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import "./CreatePost.css";
 import { useState } from "react";
 import { useUser } from "./UserProvider";
@@ -7,6 +7,7 @@ import { useUser } from "./UserProvider";
 const CreatePost = () => {
   const [isDraft, setIsDraft] = useState(false);
   const { user } = useUser();
+  const navigate = useNavigate();
 
   const url = "http://localhost:3001/api/posts";
 
@@ -30,7 +31,7 @@ const CreatePost = () => {
     try {
       const response = await fetch(url, postOptions);
       const result = await response.json();
-      redirect("/");
+      navigate("/");
     } catch (err) {
       console.log(err.message);
     }
