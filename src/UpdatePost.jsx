@@ -3,13 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./UpdatePost.css";
 
 const UpdatePost = () => {
-  const postId = useParams();
+  const params = useParams();
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);
 
   useEffect(() => {
-    const url = `http://localhost:3001/api/posts/${postId.id}`;
+    const url = `http://localhost:3001/api/posts/${params.id}`;
 
     const fetchPost = async () => {
       const res = await fetch(url);
@@ -25,14 +25,35 @@ const UpdatePost = () => {
     navigate("/");
   };
 
-  const savePost = (e) => {
+  const savePost = async (e) => {
     e.preventDefault();
+    const endpoint = `http://localhost:3001/api/posts/${params.id}`;
+    const options = {
+      credentials: "include",
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: params.id,
+        title: e.target.title.value,
+        text: e.target.text.value,
+      }),
+    };
+
+    try {
+      const response = await fetch(endpoint, options);
+
+      const result = await response.json();
+      console.log(result);
+      navigate("/");
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   if (!post) return;
 
   return (
-    <main className="update-post-main">
+    <main className="update-post-main" onSubmit={savePost}>
       <form className="update-post-form">
         <div className="label-group">
           <label htmlFor="title">Title:</label>
@@ -53,8 +74,10 @@ const UpdatePost = () => {
             defaultValue={post.text}
           ></textarea>
         </div>
-        <button onClick={cancelEdit}>Cancel</button>
-        <button>Save</button>
+        <button onClick={cancelEdit} type="button">
+          Cancel
+        </button>
+        <button type="submit">Save</button>
       </form>
     </main>
   );
