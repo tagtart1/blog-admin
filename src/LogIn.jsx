@@ -35,6 +35,12 @@ const LogIn = () => {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   return (
     <section className="login-section">
       <div className="login-panel">

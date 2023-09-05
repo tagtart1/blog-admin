@@ -22,6 +22,10 @@ const Dashboard = () => {
     }
   };
 
+  const openPost = (postId) => {
+    navigate(`/posts/${postId}`);
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch(
@@ -73,7 +77,11 @@ const Dashboard = () => {
           {posts ? (
             posts.map((post) => {
               return (
-                <article key={post._id} className="post-parent">
+                <article
+                  key={post._id}
+                  className="post-parent"
+                  onClick={() => openPost(post._id)}
+                >
                   <h2>{post.title}</h2>
                   <p className="post-date">
                     Posted on {moment(post.timestamp).format("MMM Do, YYYY")}
@@ -90,7 +98,11 @@ const Dashboard = () => {
           {draftPosts ? (
             draftPosts.map((post) => {
               return (
-                <article key={post._id} className="post-parent">
+                <article
+                  key={post._id}
+                  className="post-parent"
+                  onClick={() => openPost(post._id)}
+                >
                   <h2>{post.title}</h2>
                   <p className="post-date">
                     Started on {moment(post.timestamp).format("MMM Do, YYYY")}

@@ -6,6 +6,7 @@ import Dashboard from "./Dashboard";
 import { Routes, Route, redirect, useNavigate } from "react-router-dom";
 import CreatePost from "./CreatePost";
 import LogIn from "./LogIn";
+import UpdatePost from "./UpdatePost";
 
 function App() {
   const { user, setUser } = useUser();
@@ -26,13 +27,15 @@ function App() {
       setUser(result.data.user);
     };
     fetchUser();
-  }, [setUser]);
+    console.log("hey");
+  }, [setUser, navigate]);
 
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/create" element={<CreatePost />} />
+        <Route path="/posts/:id" element={<UpdatePost />} />
       </Routes>
     </div>
   );
