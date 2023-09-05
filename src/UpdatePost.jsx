@@ -7,6 +7,7 @@ const UpdatePost = () => {
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);
+  const [shouldDraft, setShouldDraft] = useState();
 
   useEffect(() => {
     const url = `http://localhost:3001/api/posts/${params.id}`;
@@ -15,6 +16,7 @@ const UpdatePost = () => {
       const res = await fetch(url);
       const result = await res.json();
       setPost(result);
+      setShouldDraft(result.isDraft);
     };
 
     fetchPost();
@@ -25,7 +27,7 @@ const UpdatePost = () => {
     navigate("/");
   };
 
-  const savePost = async (e) => {
+  const updatePost = async (e) => {
     e.preventDefault();
     const endpoint = `http://localhost:3001/api/posts/${params.id}`;
     const options = {
@@ -36,11 +38,17 @@ const UpdatePost = () => {
         id: params.id,
         title: e.target.title.value,
         text: e.target.text.value,
+        isDraft: shouldDraft,
       }),
     };
 
     try {
       const response = await fetch(endpoint, options);
+
+      if (!response.ok) {
+        // Show error later
+        return;
+      }
 
       const result = await response.json();
       navigate("/");
@@ -71,7 +79,7 @@ const UpdatePost = () => {
   if (!post) return;
 
   return (
-    <main className="update-post-main" onSubmit={savePost}>
+    <main className="update-post-main" onSubmit={updatePost}>
       <form className="update-post-form">
         <div className="label-group">
           <label htmlFor="title">Title:</label>
@@ -99,7 +107,15 @@ const UpdatePost = () => {
         <button type="button" onClick={deletePost}>
           Delete
         </button>
-        {post.isDraft ? <button>Post</button> : <button>Send to drafts</button>}
+        {post.isDraft ? (
+          <button type="submit" onClick={() => setShouldDraft(false)}>
+            Post
+          </button>
+        ) : (
+          <button type="submit" onClick={() => setShouldDraft(true)}>
+            Send to drafts
+          </button>
+        )}
       </form>
     </main>
   );
