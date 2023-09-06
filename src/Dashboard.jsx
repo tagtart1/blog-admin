@@ -84,7 +84,8 @@ const Dashboard = () => {
                 >
                   <h2>{post.title}</h2>
                   <p className="post-date">
-                    Posted on {moment(post.timestamp).format("MMM Do, YYYY")}
+                    Posted on{" "}
+                    {moment(post.createdTimestamp).format("MMM Do, YYYY")}
                   </p>
                 </article>
               );
@@ -105,7 +106,8 @@ const Dashboard = () => {
                 >
                   <h2>{post.title}</h2>
                   <p className="post-date">
-                    Started on {moment(post.timestamp).format("MMM Do, YYYY")}
+                    Started on{" "}
+                    {moment(post.createdTimestamp).format("MMM Do, YYYY")}
                   </p>
                 </article>
               );
