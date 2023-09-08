@@ -16,11 +16,12 @@ const LogIn = () => {
 
     const form = e.target;
     const username = form.username.value;
+    const password = form.password.value;
     const options = {
       credentials: "include",
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: username }),
+      body: JSON.stringify({ username: username, password: password }),
     };
 
     try {
