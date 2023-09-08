@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
-import "./AuthForm.css";
+import React from "react";
 import { useUser } from "./UserProvider";
-import { useNavigate, Link } from "react-router-dom";
 import useAuthForm from "./useAuthForm";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-const LogIn = () => {
+const SignUp = () => {
   const { user, setUser } = useUser();
 
   const { handleSubmit, errors } = useAuthForm(
-    "http://localhost:3001/api/login",
+    "http://localhost:3001/api/sign-up",
     setUser
   );
 
@@ -23,7 +24,7 @@ const LogIn = () => {
   return (
     <section className="auth-form-section">
       <div className="auth-form-panel">
-        <h1 className="form-title">Log In</h1>
+        <h1 className="form-title">Sign Up</h1>
         <form onSubmit={handleSubmit}>
           <div className="auth-form-group">
             <label htmlFor="username">Username:</label>
@@ -33,14 +34,14 @@ const LogIn = () => {
             <label htmlFor="password">Password:</label>
             <input type="text" id="password" name="password" />
           </div>
-          <button type="submit">Log In</button>
+          <button type="submit">Sign up</button>
         </form>
       </div>
       <p>
-        No acccount? <Link to="/sign-up">Sign up now</Link>
+        Have an account? <Link to="/log-in">Log in now</Link>
       </p>
     </section>
   );
 };
 
-export default LogIn;
+export default SignUp;

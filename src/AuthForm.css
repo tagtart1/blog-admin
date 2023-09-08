@@ -1,12 +1,13 @@
-.login-section {
+.auth-form-section {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  flex-direction: column;
 }
 
-.login-panel {
+.auth-form-panel {
   border: 1px solid black;
   border-radius: 16px;
   display: flex;
@@ -26,7 +27,7 @@ form {
   gap: 16px;
 }
 
-.login-form-group {
+.auth-form-group {
   display: flex;
   flex-direction: column;
 }
