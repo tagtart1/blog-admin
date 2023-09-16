@@ -38,9 +38,9 @@ const Dashboard = () => {
     };
 
     const fetchDrafts = async () => {
-      const response = await fetch(
-        `http://localhost:3001/api/posts?user_id=${user.id}&only_drafts=true`
-      );
+      const response = await fetch(`http://localhost:3001/api/drafts`, {
+        credentials: "include",
+      });
 
       const results = await response.json();
 

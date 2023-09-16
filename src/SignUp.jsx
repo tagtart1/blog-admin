@@ -15,6 +15,8 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  // TODO: PULL OUT ERRORS ELGENTALY, MAKE SURE API SENDS CORRECT ERROR FORMATS ETC.
+
   useEffect(() => {
     if (user) {
       navigate("/");
