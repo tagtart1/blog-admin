@@ -5,11 +5,12 @@ import { useUser } from "./UserProvider";
 import Dashboard from "./Dashboard";
 import { Routes, Route, redirect, useNavigate } from "react-router-dom";
 import CreatePost from "./CreatePost";
-import LogIn from "./LogIn";
+
 import UpdatePost from "./UpdatePost";
 
 function App() {
   const { user, setUser } = useUser();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +28,6 @@ function App() {
       setUser(result.data.user);
     };
     fetchUser();
-    console.log("hey");
   }, [setUser, navigate]);
 
   return (

@@ -32,9 +32,7 @@ const CreatePost = () => {
       const response = await fetch(url, postOptions);
       const result = await response.json();
       navigate("/");
-    } catch (err) {
-      console.log(err.message);
-    }
+    } catch (err) {}
   };
 
   if (!user) {

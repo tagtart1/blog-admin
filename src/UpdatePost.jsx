@@ -70,7 +70,7 @@ const UpdatePost = () => {
     try {
       const response = await fetch(endpoint, options);
       const result = await response.json();
-      console.log(result);
+
       navigate("/");
     } catch (err) {
       console.log(err.message);

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "./UserProvider";
+import { usePosts } from "./PostProvider";
 import "./Dashboard.css";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, setUser } = useUser();
-  const [posts, setPosts] = useState(null);
+  const { posts, setPosts } = usePosts();
+  // const [posts, setPosts] = useState(null);
   const [draftPosts, setDraftPosts] = useState(null);
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ const Dashboard = () => {
       );
 
       const results = await response.json();
-      console.log(results);
+
       setPosts(results);
     };
 
@@ -44,7 +46,6 @@ const Dashboard = () => {
 
       const results = await response.json();
 
-      console.log(results);
       setDraftPosts(results);
     };
 
@@ -83,10 +84,18 @@ const Dashboard = () => {
                   onClick={() => openPost(post._id)}
                 >
                   <h2>{post.title}</h2>
-                  <p className="post-date">
+                  <div className="post-date">
                     Posted on{" "}
                     {moment(post.createdTimestamp).format("MMM Do, YYYY")}
-                  </p>
+                    {post.lastUpdatedTimestamp ? (
+                      <span>
+                        Last updated:{" "}
+                        {moment(post.lastUpdatedTimestamp).format(
+                          "MMM Do, YYYY"
+                        )}
+                      </span>
+                    ) : null}
+                  </div>
                 </article>
               );
             })
