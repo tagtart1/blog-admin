@@ -3,9 +3,11 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import "./CreatePost.css";
 import { useState } from "react";
 import { useUser } from "./UserProvider";
+import { usePosts } from "./PostProvider";
 
 const CreatePost = () => {
   const [isDraft, setIsDraft] = useState(false);
+  const { posts, setPosts, drafts, setDrafts } = usePosts();
   const { user } = useUser();
   const navigate = useNavigate();
 
@@ -31,6 +33,9 @@ const CreatePost = () => {
     try {
       const response = await fetch(url, postOptions);
       const result = await response.json();
+
+      setDrafts(null);
+      setPosts(null);
       navigate("/");
     } catch (err) {}
   };

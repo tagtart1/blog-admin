@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import he from "he";
 import "./UpdatePost.css";
+import { usePosts } from "./PostProvider";
 
 const UpdatePost = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const { posts, setPosts, drafts, setDrafts } = usePosts();
 
-  const [post, setPost] = useState(null);
+  const [currentPost, setCurrentPost] = useState(null);
   const [shouldDraft, setShouldDraft] = useState();
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const UpdatePost = () => {
     const fetchPost = async () => {
       const res = await fetch(url);
       const result = await res.json();
-      setPost(result);
+      setCurrentPost(result);
       setShouldDraft(result.isDraft);
     };
 
@@ -52,6 +54,8 @@ const UpdatePost = () => {
       }
 
       const result = await response.json();
+      setDrafts(null);
+      setPosts(null);
       navigate("/");
     } catch (err) {
       console.log(err.message);
@@ -70,14 +74,15 @@ const UpdatePost = () => {
     try {
       const response = await fetch(endpoint, options);
       const result = await response.json();
-
+      setDrafts(null);
+      setPosts(null);
       navigate("/");
     } catch (err) {
       console.log(err.message);
     }
   };
 
-  if (!post) return;
+  if (!currentPost) return;
 
   return (
     <main className="update-post-main" onSubmit={updatePost}>
@@ -88,7 +93,7 @@ const UpdatePost = () => {
             type="text"
             name="title"
             id="title"
-            defaultValue={post.title}
+            defaultValue={currentPost.title}
           />
         </div>
         <div className="label-group">
@@ -98,7 +103,7 @@ const UpdatePost = () => {
             id="text"
             cols="30"
             rows="10"
-            defaultValue={he.decode(post.text)}
+            defaultValue={he.decode(currentPost.text)}
           ></textarea>
         </div>
         <button onClick={cancelEdit} type="button">
@@ -108,7 +113,7 @@ const UpdatePost = () => {
         <button type="button" onClick={deletePost}>
           Delete
         </button>
-        {post.isDraft ? (
+        {currentPost.isDraft ? (
           <button type="submit" onClick={() => setShouldDraft(false)}>
             Post
           </button>

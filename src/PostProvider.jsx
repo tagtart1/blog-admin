@@ -6,9 +6,10 @@ const PostContext = createContext(null);
 
 const PostProvider = ({ children }) => {
   const [posts, setPosts] = useState(null);
+  const [drafts, setDrafts] = useState(null);
 
   return (
-    <PostContext.Provider value={{ posts, setPosts }}>
+    <PostContext.Provider value={{ posts, setPosts, drafts, setDrafts }}>
       {children}
     </PostContext.Provider>
   );

@@ -7,9 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, setUser } = useUser();
-  const { posts, setPosts } = usePosts();
-  // const [posts, setPosts] = useState(null);
-  const [draftPosts, setDraftPosts] = useState(null);
+  const { posts, setPosts, drafts, setDrafts } = usePosts();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const logOut = async () => {
@@ -20,6 +19,8 @@ const Dashboard = () => {
 
     if (response.ok) {
       setUser(null);
+      setDrafts(null);
+      setPosts(null);
       navigate("/log-in");
     }
   };
@@ -30,6 +31,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setIsLoading(true);
       const response = await fetch(
         `http://localhost:3001/api/posts?user_id=${user.id}`
       );
@@ -37,24 +39,32 @@ const Dashboard = () => {
       const results = await response.json();
 
       setPosts(results);
+      setIsLoading(false);
     };
 
     const fetchDrafts = async () => {
+      setIsLoading(true);
       const response = await fetch(`http://localhost:3001/api/drafts`, {
         credentials: "include",
       });
 
       const results = await response.json();
-
-      setDraftPosts(results);
+      setDrafts(results);
+      setIsLoading(false);
     };
 
     if (!user) {
       return;
     }
 
-    fetchDrafts();
-    fetchPosts();
+    if (!posts) {
+      fetchPosts();
+      console.log("FETCHING POSTS");
+    }
+    if (!drafts) {
+      fetchDrafts();
+      console.log("FETCHING DRAFTS");
+    }
   }, [user]);
 
   if (!user) {
@@ -75,7 +85,9 @@ const Dashboard = () => {
       <div className="user-post-sections">
         <section className="posts-feed">
           <h2>Posted</h2>
-          {posts ? (
+          {isLoading ? (
+            <p>LOADING</p>
+          ) : posts && posts.length > 0 ? (
             posts.map((post) => {
               return (
                 <article
@@ -105,8 +117,10 @@ const Dashboard = () => {
         </section>
         <section className="posts-feed">
           <h2>Drafts</h2>
-          {draftPosts ? (
-            draftPosts.map((post) => {
+          {isLoading ? (
+            <p>LOADING</p>
+          ) : drafts && drafts.length > 0 ? (
+            drafts.map((post) => {
               return (
                 <article
                   key={post._id}
