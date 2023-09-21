@@ -14,6 +14,8 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (user) return;
+
     const fetchUser = async () => {
       const response = await fetch("http://localhost:3001/api/validate-user", {
         credentials: "include",
@@ -24,11 +26,13 @@ function App() {
         return;
       }
       const result = await response.json();
-
+      console.log("SETTING USER");
       setUser(result.data.user);
     };
     fetchUser();
   }, [setUser, navigate]);
+
+  useEffect(() => {});
 
   return (
     <div className="App">

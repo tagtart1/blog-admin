@@ -30,6 +30,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    if (!user) return; // No user, don't do anything!
+
     const fetchPosts = async () => {
       setIsLoading(true);
       const response = await fetch(
@@ -52,10 +54,7 @@ const Dashboard = () => {
       setDrafts(results);
       setIsLoading(false);
     };
-
-    if (!user) {
-      return;
-    }
+    console.log("IN DASHBOARD USE EFFECT");
 
     if (!posts) {
       fetchPosts();
