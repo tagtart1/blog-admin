@@ -39,6 +39,11 @@ const LogIn = () => {
       <p>
         No acccount? <Link to="/sign-up">Sign up now</Link>
       </p>
+      {errors
+        ? errors.map((error) => {
+            return <div key={error.id}>{error.message}</div>;
+          })
+        : null}
     </section>
   );
 };

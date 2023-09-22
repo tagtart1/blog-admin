@@ -12,6 +12,11 @@ const useAuthForm = (endpoint, setUser) => {
     const form = e.target;
     const username = form.username.value;
     const password = form.password.value;
+
+    if (!username || !password) {
+      setErrors([{ message: "Credentials invalid", id: 1 }]);
+    }
+
     const options = {
       credentials: "include",
       method: "POST",
@@ -24,7 +29,7 @@ const useAuthForm = (endpoint, setUser) => {
 
       if (!response.ok) {
         const err = await response.json();
-        console.log(err.message);
+        setErrors([{ message: err.message, id: 1 }]);
         return;
       }
 
@@ -32,7 +37,7 @@ const useAuthForm = (endpoint, setUser) => {
       setUser(result.data);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      setErrors([{ message: "Unknown error has occurred.", id: 1 }]);
     }
   };
 
