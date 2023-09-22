@@ -22,11 +22,17 @@ const useAuthForm = (endpoint, setUser) => {
     try {
       const response = await fetch(endpoint, options);
 
+      if (!response.ok) {
+        const err = await response.json();
+        console.log(err.message);
+        return;
+      }
+
       const result = await response.json();
       setUser(result.data);
       navigate("/");
-    } catch (err) {
-      setErrors(err.message);
+    } catch (error) {
+      console.log(error);
     }
   };
 

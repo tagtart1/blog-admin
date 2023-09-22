@@ -3,7 +3,7 @@ import "./App.css";
 
 import { useUser } from "./UserProvider";
 import Dashboard from "./Dashboard";
-import { Routes, Route, redirect, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import CreatePost from "./CreatePost";
 
 import UpdatePost from "./UpdatePost";
@@ -30,7 +30,7 @@ function App() {
       setUser(result.data.user);
     };
     fetchUser();
-  }, [setUser, navigate]);
+  }, [setUser, navigate, user]);
 
   useEffect(() => {});
 
