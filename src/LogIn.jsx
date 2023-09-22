@@ -7,7 +7,7 @@ import useAuthForm from "./useAuthForm";
 const LogIn = () => {
   const { user, setUser } = useUser();
 
-  const { handleSubmit, errors } = useAuthForm(
+  const { handleSubmit, error } = useAuthForm(
     "http://localhost:3001/api/login",
     setUser
   );
@@ -39,11 +39,7 @@ const LogIn = () => {
       <p>
         No acccount? <Link to="/sign-up">Sign up now</Link>
       </p>
-      {errors
-        ? errors.map((error) => {
-            return <div key={error.id}>{error.message}</div>;
-          })
-        : null}
+      {error ? <div className="error-message">{error.message}</div> : null}
     </section>
   );
 };

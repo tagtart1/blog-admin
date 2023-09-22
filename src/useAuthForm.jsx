@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const useAuthForm = (endpoint, setUser) => {
-  const [errors, setErrors] = useState(null);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const useAuthForm = (endpoint, setUser) => {
     const password = form.password.value;
 
     if (!username || !password) {
-      setErrors([{ message: "Credentials invalid", id: 1 }]);
+      setError({ message: "Credentials invalid", id: 1 });
     }
 
     const options = {
@@ -29,7 +29,7 @@ const useAuthForm = (endpoint, setUser) => {
 
       if (!response.ok) {
         const err = await response.json();
-        setErrors([{ message: err.message, id: 1 }]);
+        setError({ message: err.message });
         return;
       }
 
@@ -37,13 +37,13 @@ const useAuthForm = (endpoint, setUser) => {
       setUser(result.data);
       navigate("/");
     } catch (error) {
-      setErrors([{ message: "Unknown error has occurred.", id: 1 }]);
+      setError({ message: "Unknown error has occurred." });
     }
   };
 
   return {
     handleSubmit,
-    errors,
+    error,
   };
 };
 
