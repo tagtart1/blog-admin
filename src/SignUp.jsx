@@ -15,8 +15,6 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  // TODO: PULL OUT ERRORS ELGENTALY, MAKE SURE API SENDS CORRECT ERROR FORMATS ETC.
-
   useEffect(() => {
     if (user) {
       navigate("/");
@@ -42,6 +40,11 @@ const SignUp = () => {
       <p>
         Have an account? <Link to="/log-in">Log in now</Link>
       </p>
+      {errors
+        ? errors.map((msg, index) => {
+            return <p key={index}>{msg}</p>;
+          })
+        : null}
     </section>
   );
 };

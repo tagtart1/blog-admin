@@ -40,7 +40,7 @@ const Dashboard = () => {
 
       const results = await response.json();
 
-      setPosts(results);
+      setPosts(results.data.posts);
       setIsLoading(false);
     };
 
@@ -51,7 +51,7 @@ const Dashboard = () => {
       });
 
       const results = await response.json();
-      setDrafts(results);
+      setDrafts(results.data.drafts);
       setIsLoading(false);
     };
     console.log("IN DASHBOARD USE EFFECT");

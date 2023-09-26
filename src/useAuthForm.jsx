@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const useAuthForm = (endpoint, setUser) => {
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState(null);
 
   const navigate = useNavigate();
 
@@ -14,7 +14,8 @@ const useAuthForm = (endpoint, setUser) => {
     const password = form.password.value;
 
     if (!username || !password) {
-      setError({ message: "Credentials invalid", id: 1 });
+      setErrors(["Fields can not be blank!"]);
+      return;
     }
 
     const options = {
@@ -28,8 +29,9 @@ const useAuthForm = (endpoint, setUser) => {
       const response = await fetch(endpoint, options);
 
       if (!response.ok) {
-        const err = await response.json();
-        setError({ message: err.message });
+        const errs = await response.json();
+        console.log(errs);
+        setErrors(errs.messages);
         return;
       }
 
@@ -37,13 +39,13 @@ const useAuthForm = (endpoint, setUser) => {
       setUser(result.data);
       navigate("/");
     } catch (error) {
-      setError({ message: "Unknown error has occurred." });
+      setErrors(["Unknown error has occurred."]);
     }
   };
 
   return {
     handleSubmit,
-    error,
+    errors,
   };
 };
 

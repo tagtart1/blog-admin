@@ -11,15 +11,23 @@ const UpdatePost = () => {
 
   const [currentPost, setCurrentPost] = useState(null);
   const [shouldDraft, setShouldDraft] = useState();
+  const [errors, setErrors] = useState(null);
 
   useEffect(() => {
     const url = `http://localhost:3001/api/posts/${params.id}`;
 
     const fetchPost = async () => {
       const res = await fetch(url);
+
+      if (!res.ok) {
+        const errs = await res.json();
+
+        setErrors(errs);
+        return;
+      }
       const result = await res.json();
-      setCurrentPost(result);
-      setShouldDraft(result.isDraft);
+      setCurrentPost(result.data.post);
+      setShouldDraft(result.data.post.isDraft);
     };
 
     fetchPost();
@@ -49,16 +57,16 @@ const UpdatePost = () => {
       const response = await fetch(endpoint, options);
 
       if (!response.ok) {
-        // Show error later
+        const result = await response.json();
+        setErrors(result);
         return;
       }
 
-      const result = await response.json();
       setDrafts(null);
       setPosts(null);
       navigate("/");
-    } catch (err) {
-      console.log(err.message);
+    } catch {
+      setErrors("Could not update post");
     }
   };
 
@@ -72,15 +80,19 @@ const UpdatePost = () => {
       body: JSON.stringify({ id: params.id }),
     };
     try {
-      const response = await fetch(endpoint, options);
-      const result = await response.json();
+      await fetch(endpoint, options);
+
       setDrafts(null);
       setPosts(null);
       navigate("/");
     } catch (err) {
-      console.log(err.message);
+      setErrors("Could not delete post");
     }
   };
+  if (errors && errors.code === "NOT_FOUND") {
+    console.log("hey");
+    return <div>POST NOT FOUND</div>;
+  }
 
   if (!currentPost) return;
 
@@ -123,6 +135,11 @@ const UpdatePost = () => {
           </button>
         )}
       </form>
+      {errors
+        ? errors.messages.map((message, index) => {
+            return <div key={index}>{message}</div>;
+          })
+        : null}
     </main>
   );
 };
