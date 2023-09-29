@@ -46,6 +46,7 @@ const useAuthForm = (endpoint, setUser) => {
   return {
     handleSubmit,
     errors,
+    setErrors,
   };
 };
 

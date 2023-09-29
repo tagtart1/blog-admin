@@ -4,10 +4,13 @@ import "./CreatePost.css";
 import { useState } from "react";
 import { useUser } from "./UserProvider";
 import { usePosts } from "./PostProvider";
+import ErrorPopUp from "./components/ErrorPopUp/ErrorPopUp";
 
 const CreatePost = () => {
   const [isDraft, setIsDraft] = useState(false);
   const { posts, setPosts, drafts, setDrafts } = usePosts();
+  const [error, setError] = useState();
+
   const { user } = useUser();
   const navigate = useNavigate();
 
@@ -32,6 +35,12 @@ const CreatePost = () => {
 
     try {
       const response = await fetch(url, postOptions);
+      if (!response.ok) {
+        const err = await response.json();
+        setError(err);
+
+        return;
+      }
       const result = await response.json();
 
       setDrafts(null);
@@ -79,6 +88,12 @@ const CreatePost = () => {
           Save to drafts
         </button>
       </form>
+
+      <ErrorPopUp
+        isVisible={error ? true : false}
+        message={error ? error.messages[0] : null}
+        onClose={() => setError(null)}
+      />
     </main>
   );
 };
